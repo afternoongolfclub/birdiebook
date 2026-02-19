@@ -80,20 +80,30 @@ async function bootstrap() {
     // Show loading state
     document.getElementById('holeGrid').innerHTML = '<p style="color:#6b7280;padding:1rem;">Loading…</p>';
 
-    // Fetch initial data then start live listeners
-    const [hccSnap, otherSnap, msSnap] = await Promise.all([
-        getDoc(hccRef),
-        getDoc(otherRef),
-        getDoc(milestonesRef)
-    ]);
+    try {
+        // Fetch initial data then start live listeners
+        const [hccSnap, otherSnap, msSnap] = await Promise.all([
+            getDoc(hccRef),
+            getDoc(otherRef),
+            getDoc(milestonesRef)
+        ]);
 
-    initBirdies(hccSnap.exists() ? hccSnap.data().data : {});
-    otherBirdies = otherSnap.exists() ? otherSnap.data().data : [];
-    achievedMilestones = msSnap.exists() ? msSnap.data().data : {};
+        initBirdies(hccSnap.exists() ? hccSnap.data().data : {});
+        otherBirdies = otherSnap.exists() ? otherSnap.data().data : [];
+        achievedMilestones = msSnap.exists() ? msSnap.data().data : {};
 
-    firestoreReady = true;
-    renderAll();
-    startListeners();
+        firestoreReady = true;
+        renderAll();
+        startListeners();
+    } catch (err) {
+        console.error('Firestore error:', err);
+        initBirdies({});
+        otherBirdies = [];
+        achievedMilestones = {};
+        renderAll();
+        document.getElementById('hccProgress').innerHTML =
+            '<span style="color:#ef4444;font-size:0.85rem;">⚠️ Could not connect to database. Check Firebase setup.</span>';
+    }
 }
 
 // ===== Tab Navigation =====
