@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BirdieBook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2314532d'/><text x='50' y='68' font-size='55' text-anchor='middle' fill='%23d4a44c'>B</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo-mark">B</div>
+        <div class="header-text">
+            <h1>BirdieBook</h1>
+            <p class="subtitle">Every round tells a story.</p>
+        </div>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab active" data-tab="huntsville">Huntsville CC</button>
+        <button class="tab" data-tab="allBirdies">All Birdies</button>
+        <button class="tab" data-tab="stats">Stats & Charts</button>
+        <button class="tab" data-tab="milestones">Milestones</button>
+    </nav>
+
+    <main>
+        <!-- Huntsville Country Club Section -->
+        <section id="huntsville" class="tab-content active">
+            <div class="course-header">
+                <h2>Huntsville Country Club</h2>
+                <p class="section-desc">2026 Goal: Birdie every hole</p>
+                <div class="progress-summary" id="hccProgress"></div>
+            </div>
+            <p class="section-desc">Tap a hole to log a birdie or view history.</p>
+            <div class="hole-grid" id="holeGrid"></div>
+        </section>
+
+        <!-- All Birdies Log -->
+        <section id="allBirdies" class="tab-content">
+            <div class="section-header-row">
+                <div>
+                    <h2>All Birdies</h2>
+                    <p class="section-desc">Every birdie you've made, all in one place.</p>
+                </div>
+                <button class="btn btn-birdie btn-log-other" id="openOtherBirdieModal">+ Log Birdie</button>
+            </div>
+            <div class="all-birdies-summary" id="allBirdiesSummary"></div>
+            <div class="birdie-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="month">This Month</button>
+                <button class="filter-btn" data-filter="year">This Year</button>
+            </div>
+            <div id="allBirdiesList"></div>
+        </section>
+
+        <!-- Stats & Charts -->
+        <section id="stats" class="tab-content">
+            <h2>Stats & Charts</h2>
+            <div class="stats-cards" id="statsCards"></div>
+            <div class="chart-container">
+                <h3>Birdies Over Time</h3>
+                <canvas id="birdieChart" width="600" height="300"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Birdies by Hole</h3>
+                <canvas id="scoreChart" width="600" height="300"></canvas>
+            </div>
+        </section>
+
+        <!-- Milestones -->
+        <section id="milestones" class="tab-content">
+            <h2>Milestones</h2>
+            <div class="milestone-section">
+                <h3 class="milestone-section-title">Huntsville CC</h3>
+                <div id="hccMilestoneList"></div>
+            </div>
+            <div class="milestone-section">
+                <h3 class="milestone-section-title">Overall</h3>
+                <div id="overallMilestoneList"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Birdie Detail Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Hole Details</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <div class="modal-date-row">
+                    <label for="modalBirdieDate">Date:</label>
+                    <input type="date" id="modalBirdieDate">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-birdie" id="modalLogBirdie">Log Birdie</button>
+                    <button class="btn btn-danger" id="modalRemoveLast">Remove Last</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Course Birdie Modal -->
+    <div class="modal-overlay" id="otherBirdieOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Log a Birdie</h3>
+                <button class="modal-close" id="otherBirdieClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-field">
+                    <label for="otherCourseSelect">Course</label>
+                    <select id="otherCourseSelect">
+                        <option value="">Select a course…</option>
+                        <option value="__new__">+ Add new course…</option>
+                    </select>
+                </div>
+                <div class="form-field" id="newCourseField" style="display:none;">
+                    <label for="newCourseName">Course Name</label>
+                    <input type="text" id="newCourseName" placeholder="e.g. Augusta National" autocomplete="off">
+                </div>
+                <div class="form-field-row">
+                    <div class="form-field">
+                        <label for="otherHoleNumber">Hole</label>
+                        <input type="number" id="otherHoleNumber" min="1" max="19" placeholder="1–18">
+                    </div>
+                    <div class="form-field">
+                        <label for="otherPar">Par</label>
+                        <select id="otherPar">
+                            <option value="">—</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label for="otherBirdieDate">Date</label>
+                    <input type="date" id="otherBirdieDate">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="btn btn-birdie" id="otherBirdieSubmit">Log Birdie</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
