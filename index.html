@@ -22,6 +22,7 @@
     <nav class="tabs">
         <button class="tab active" data-tab="huntsville">Huntsville CC</button>
         <button class="tab" data-tab="allBirdies">All Birdies</button>
+        <button class="tab" data-tab="rounds">Rounds</button>
         <button class="tab" data-tab="stats">Stats & Charts</button>
         <button class="tab" data-tab="milestones">Milestones</button>
     </nav>
@@ -56,17 +57,57 @@
             <div id="allBirdiesList"></div>
         </section>
 
+        <!-- Rounds -->
+        <section id="rounds" class="tab-content">
+            <div class="section-header-row">
+                <div>
+                    <h2>Rounds</h2>
+                    <p class="section-desc">Full scorecards and performance tracking.</p>
+                </div>
+                <button class="btn btn-birdie btn-log-other" id="openScorecardModal">+ Log Round</button>
+            </div>
+            <div class="all-birdies-summary" id="roundsSummaryCards"></div>
+            <div class="rounds-filter">
+                <select id="roundsCourseFilter" class="rounds-select">
+                    <option value="all">All Courses</option>
+                </select>
+            </div>
+            <div id="roundsList"></div>
+        </section>
+
         <!-- Stats & Charts -->
         <section id="stats" class="tab-content">
             <h2>Stats & Charts</h2>
-            <div class="stats-cards" id="statsCards"></div>
-            <div class="chart-container">
-                <h3>Birdies Over Time</h3>
-                <canvas id="birdieChart" width="600" height="300"></canvas>
+            <div class="stats-toggle">
+                <button class="filter-btn active" data-stats-view="birdies">Birdies</button>
+                <button class="filter-btn" data-stats-view="scoring">Scoring</button>
             </div>
-            <div class="chart-container">
-                <h3>Birdies by Hole</h3>
-                <canvas id="scoreChart" width="600" height="300"></canvas>
+            <div id="statsViewBirdies">
+                <div class="stats-cards" id="statsCards"></div>
+                <div class="chart-container">
+                    <h3>Birdies Over Time</h3>
+                    <canvas id="birdieChart" width="600" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Birdies by Hole</h3>
+                    <canvas id="scoreChart" width="600" height="300"></canvas>
+                </div>
+            </div>
+            <div id="statsViewScoring" style="display:none;">
+                <div class="stats-cards" id="scoringStatsCards"></div>
+                <div id="sgSection"></div>
+                <div class="chart-container">
+                    <h3>Scoring Trend</h3>
+                    <canvas id="scoringTrendChart" width="600" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Strokes Gained Breakdown</h3>
+                    <canvas id="sgBreakdownChart" width="600" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Putts Per Round</h3>
+                    <canvas id="puttsTrendChart" width="600" height="300"></canvas>
+                </div>
             </div>
         </section>
 
@@ -152,6 +193,35 @@
         </div>
     </div>
 
+    <!-- Scorecard Entry Modal -->
+    <div class="modal-overlay" id="scorecardOverlay">
+        <div class="modal scorecard-modal">
+            <div class="modal-header">
+                <h3 id="scorecardModalTitle">Log a Round</h3>
+                <button class="modal-close" id="scorecardClose">&times;</button>
+            </div>
+            <div class="modal-body scorecard-body" id="scorecardBody"></div>
+            <div class="modal-footer" id="scorecardFooter"></div>
+        </div>
+    </div>
+
+    <!-- New Course Modal -->
+    <div class="modal-overlay" id="newCourseOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>New Course</h3>
+                <button class="modal-close" id="newCourseClose">&times;</button>
+            </div>
+            <div class="modal-body" id="newCourseBody"></div>
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="btn btn-birdie" id="saveCourseBtn">Save Course</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="app.js"></script>
+    <script type="module" src="scorecard.js"></script>
 </body>
 </html>

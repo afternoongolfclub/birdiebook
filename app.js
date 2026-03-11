@@ -325,9 +325,9 @@ function renderAllBirdiesList() {
     list.innerHTML = html;
 }
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
+document.querySelectorAll('.birdie-filters .filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.birdie-filters .filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentBirdieFilter = btn.dataset.filter;
         renderAllBirdiesList();
